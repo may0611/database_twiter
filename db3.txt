@@ -1,0 +1,42 @@
+create database mydb3;
+
+use mydb3;
+
+create table user(
+id varchar(10) PRIMARY KEY NOT NULL,
+name varchar(10) NOT NULL,
+birth int(11) NOT NULL,
+pw varchar(10) 
+);
+
+create table board(
+id varchar(10),
+writer varchar(10),
+date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+post varchar(150),
+FOREIGN KEY(writer) references user(id),
+FOREIGN KEY(id) references user(id)
+);
+
+create table follow(
+id varchar(10),
+f_id varchar(10),
+PRIMARY KEY (ID, f_id),
+FOREIGN KEY(id) references user(id),
+FOREIGN KEY(f_id) references user(id)
+);
+
+CREATE TABLE messages (
+  message_id INT AUTO_INCREMENT PRIMARY KEY,
+  sender_id VARCHAR(10),
+  receiver_id VARCHAR(10),
+  message_text TEXT,
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (sender_id) REFERENCES user(id),
+  FOREIGN KEY (receiver_id) REFERENCES user(id)
+);
+
+CREATE PROCEDURE mydb3.addpost(IN owner VARCHAR(255), IN writer VARCHAR(255), IN post VARCHAR(255))
+begin
+ Insert into board(id,writer,post) values (owner,writer,post);
+ END //
